@@ -5,8 +5,9 @@ public class TimersTextBehavior : MonoBehaviour
 {
 //------------------------------------ PUBLIC MEMBERS ------------------------------------------//
     public int topTextOffset = 40;
-    
     public float turnTime = 10.0f;
+
+    public EndTurnControl endTurnButton;
     
 //------------------------------------ PRIVATE MEMBERS ------------------------------------------//
     /// <summary>
@@ -14,6 +15,8 @@ public class TimersTextBehavior : MonoBehaviour
     /// Contains 'left till turn ends' time.
     /// </summary>
     private float nextTurnTime = 0.0f;
+
+    private bool turnEndedFired = false;
 	
 //------------------------------------ DELEGATES ------------------------------------------//
     /**
@@ -29,7 +32,11 @@ public class TimersTextBehavior : MonoBehaviour
         // TODO: add some smart way to find the right Y text's position.
         Vector2 newPixelOffset = new Vector2(Screen.width / 2, Screen.height - topTextOffset);
         guiText.pixelOffset = newPixelOffset;
-        turnStarts();
+        onTurnStarts();
+        if (endTurnButton != null)
+        {
+            endTurnButton.turnEnded += onTurnEnded;
+        }
 	  }
     
     void Update()
@@ -41,11 +48,15 @@ public class TimersTextBehavior : MonoBehaviour
         }
         else
         {
-            // turn is over, so it is time to do something
-            if (turnEnded != null)
-            {
-                turnEnded();
-            }
+          if (!turnEndedFired)
+          {
+              // turn is over, so it is time to do something
+              if (turnEnded != null)
+              {
+                  turnEnded();
+              }
+              turnEndedFired = true;
+          }
         }
     }
     
@@ -53,10 +64,21 @@ public class TimersTextBehavior : MonoBehaviour
     /**
      * called when turn is started
      */
-    public void turnStarts()
+    public void onTurnStarts()
     {
         initTurnTimer();
         updateText();
+        turnEndedFired = false;
+    }
+
+    /**
+     * called when turn is ended.
+     * We just want to stop our timer till next turn is started.
+     */
+    public void onTurnEnded()
+    {
+        nextTurnTime = 0.0f;
+        turnEndedFired = true;
     }
     
     /**
