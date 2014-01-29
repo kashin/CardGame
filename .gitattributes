@@ -1,6 +1,7 @@
 *.cs text eol=lf
 *.js text eol=lf
 *.txt text eol=lf
+*.meta text eol=lf
 .gitattributes text eol=lf
 .gitignore text eol=lf
 TODO text eol=lf
