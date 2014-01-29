@@ -1,24 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EndTurnControl : MonoBehaviour
+public class EndTurnControl : BaseTouchControl
 {
     public delegate void turnEndedEvent();
     public event turnEndedEvent turnEnded;
+    public float bottomAutoOffset = 0.7f;
 
 	void Start()
     {
         Rect newPixelInset = new Rect(0,0, guiTexture.pixelInset.width, guiTexture.pixelInset.height);
         newPixelInset.x = Screen.width - newPixelInset.width;
-        newPixelInset.y = 0;
+        newPixelInset.y = Screen.height * bottomAutoOffset;
         guiTexture.pixelInset = newPixelInset;
 	}
 
-	void Update()
+    protected override void onTouchEnded()
     {
+        fireTurnEnded();
     }
 
-    void OnMouseUpAsButton()
+    protected override void onControlClicked()
     {
         fireTurnEnded();
     }
