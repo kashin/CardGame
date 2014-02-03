@@ -56,6 +56,7 @@ public class TimersTextBehavior : MonoBehaviour
                   turnEnded();
               }
               turnEndedFired = true;
+              updateText();
           }
         }
     }

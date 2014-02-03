@@ -27,6 +27,10 @@ public class MainControlsPlate : MonoBehaviour
             actionSize.y = (newPixelInset.height - 3 * newPixelInset.height * spaceBetweenActions) / 2;
             createAndPlaceActions();
         }
+        else
+        {
+            Debug.LogWarning("MainControlsPlate: guiTexture is not found");
+        }
     }
 
     void Update()
